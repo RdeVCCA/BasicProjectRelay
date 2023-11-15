@@ -10,10 +10,10 @@ pygame.display.set_caption("SEA SHOOTER")
 assets = {
     "player":[pygame.image.load("assets/sprite_mermaid0.png")],
     "background":[pygame.image.load("assets/lava1.png"),pygame.image.load("assets/lava2.png"),pygame.image.load("assets/lava3.png"),pygame.image.load("assets/lava4.png")],
-    "asteriod":[pygame.image.load("assets/submarine.png"),
+    "asteriod":[pygame.image.load("assets/submarine.png")],
     "bullet":[pygame.image.load("assets/New Piskel (1).png")],
-    "bgm":pygame.mixer.Sound("assets/bgm.mp3"),
-    "pew":pygame.mixer.Sound("assets/pew.mp3")
+    "bgm":pygame.mixer.Sound("assets/music1.mp3"),
+    "pew":pygame.mixer.Sound("assets/fart.mp3")
 }
 cooldown = {"dash":0}
 
@@ -156,7 +156,7 @@ class Bullet(Object):
         surface = pygame.Surface((2,12))  #Create a surface, which is basically a image filled with solid color
         surface.fill((255, 0, 220)) #Fill the surface with a color
         super().__init__("bullet",assets["bullet"],False,location,60,True) 
-        self.velocity = [0,-5] #Travel upwards
+        self.velocity = [0,-8] #Travel upwards
         if self.velocity[1] < 0:
             self.velocity[1] -= 0.05
             
@@ -245,6 +245,8 @@ while run:
         if frame_count > shoot_delay:
             pygame.mixer.Channel(1).play(assets["pew"]) 
             generate_bullet(player) 
+            generate_bullet(player)
+
          
             frame_count = 0
         queue = pygame.event.get()
@@ -281,7 +283,7 @@ while run:
                     player.acc[1] -= acc
                 if event.unicode == "a":
                     player.acc[0] -= acc
-        if random.choice(range(100)) < 5:
+        if random.choice(range(100)) < 25:
             generate_asteriod()
 
         game.update()
