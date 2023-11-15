@@ -158,9 +158,9 @@ class Asteriod(Object): # create asteroids to shoot
         global alive
         super().update()
         if self.very_fast:
-            self.velocity[1] += 40;
+            self.velocity[1] += 20;
         elif self.very_slow:
-            self.velocity[1] -= 10;
+            self.velocity[1] -= 5;
         
         if self.move_left:
             self.velocity[0] += 10;
@@ -250,16 +250,12 @@ def generate_bullet(player_obj):
     img = random.choice(assets["asteriod"])
     location = [player_obj.pos[0] + player_obj.image.get_width()/4 ,player_obj.pos[1]]
     game.add(Bullet(location))
-    location = [random.choice(range(0,width-assets["asteriod"][0].get_width())),-1*assets["asteriod"][0].get_height()] 
-    game.add(Asteriod(img,location,False))
     
-def generate_asteriod(player_obj):
+def generate_asteriod():
     img = random.choice(assets["asteriod"])
     print(img)
     location = [random.choice(range(0,width-assets["asteriod"][0].get_width())),-1*assets["asteriod"][0].get_height()]
     game.add(Asteriod(img,location,False))
-    location = [player_obj.pos[0] + player_obj.image.get_width()/4 ,player_obj.pos[1]]
-    game.add(Bullet(location))
 
 pygame.mixer.Channel(0).play(assets["bgm"],1,fade_ms=500)
 
