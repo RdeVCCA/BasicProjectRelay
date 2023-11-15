@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect();
         self.rect.x = self.x;
         self.rect.y = self.y;
+        self.image.fill('black')
 
     def movement(self, keys):
         if self.playerNumber == 1:  # WASD controls for player 1

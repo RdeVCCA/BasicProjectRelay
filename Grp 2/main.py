@@ -24,7 +24,7 @@ run = True
 game = pygame.sprite.Group();
 
 player1 = Player(1, 0, 0);
-player2 = Player(2, 600, 0);
+player2 = Player(2, 750, 0);
 
 game.add(player1);
 game.add(player2)
@@ -34,14 +34,17 @@ while run:
         if event.type == pygame.QUIT:   
             run = False
 
-    # Game logic goes here
-
+    keys = pygame.key.get_pressed();
+    
+    player1.movement(keys);
+    player2.movement(keys);
 
     # Clear the screen
     screen.fill(white)
 
     # Draw objects or perform additional rendering
     game.draw(screen);
+    game.update();
 
     # Update the display
     pygame.display.flip()
