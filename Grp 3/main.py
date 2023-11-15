@@ -250,7 +250,7 @@ def generate_bullet(player_obj):
     location = [player_obj.pos[0] + player_obj.image.get_width()/4 ,player_obj.pos[1]]
     game.add(Bullet(location))
     
-def generate_asteriod():
+def generate_asteriod(player_obj):
     img = random.choice(assets["asteriod"])
     print(img)
     location = [random.choice(range(0,width-assets["asteriod"][0].get_width())),-1*assets["asteriod"][0].get_height()]
