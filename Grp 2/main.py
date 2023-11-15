@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-=======
 # game idea
 # 2-player puzzle solving game
 # the 2 players are joined together by a string or something
 # and then they solve some kind of puzzle
-
 import pygame
 
 # Initialize Pygame
@@ -43,6 +40,3 @@ while run:
 
 # Quit Pygame
 pygame.quit()
-sys.exit()
-
->>>>>>> cc5688176706e2b509d57d8809512f853f956ac6
