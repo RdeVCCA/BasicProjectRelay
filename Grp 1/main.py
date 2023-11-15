@@ -11,6 +11,9 @@ from clock import Clock
 pygame.init()
 pygame.font.init()
 
+def music():
+    pygame.mixer.Channel(0).play(pygame.mixer.Sound('Grp 1/RVHS School Song.mp3'),1,fade_ms=500)
+
 class Main():
 	def __init__(self, screen):
 		self.screen = screen
@@ -79,6 +82,7 @@ class Main():
 		maze.generate_maze()
 		clock.start_timer()
 		while self.running:
+			music();
 			self.screen.fill("gray")
 			self.screen.fill( pygame.Color("darkslategray"), (603, 0, 752, 752))
 			
