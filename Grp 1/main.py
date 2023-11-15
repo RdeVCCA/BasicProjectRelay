@@ -7,7 +7,6 @@ from maze import Maze
 from player import Player
 from game import Game
 from clock import Clock
-import math
 
 pygame.init()
 pygame.font.init()
@@ -30,38 +29,26 @@ class Main():
 		self.screen.blit(instructions3,(630,362))
 
 	# draws all configs; maze, player, instructions, and time
-	def _draw(self, maze, tile, player, game, clock, rotation_angle):
-		self.screen.fill("gray")
-		self.screen.fill(pygame.Color("darkslategray"), (603, 0, 752, 752))
+	def _draw(self, maze, tile, player, game, clock):
+		# draw maze
+		[cell.draw(self.screen, tile) for cell in maze.grid_cells]
 
-        # Save the current state of the screen
-		original_screen = self.screen.copy()
-
-        # Apply the rotation to the maze
-		rotated_maze = pygame.transform.rotate(maze.image, rotation_angle)
-
-        # Draw the rotated maze on the screen
-		self.screen.blit(rotated_maze, rotated_maze.get_rect(center=(self.screen.get_width() // 2, self.screen.get_height() // 2)))
-
-        # Draw every player movement
-		player.draw(self.screen)
-		player.update()
-
-        # Add a goal point to reach
+		# add a goal point to reach
 		game.add_goal_point(self.screen)
 
-        # Instructions, clock, winning message
+		# draw every player movement
+		player.draw(self.screen)
+		player.update()
+		
+		# instructions, clock, winning message
 		self.instructions()
 		if self.game_over:
 			clock.stop_timer()
-			self.screen.blit(game.message(), (610, 120))
+			self.screen.blit(game.message(),(610,120))
 		else:
 			clock.update_timer()
-		self.screen.blit(clock.display_timer(), (625, 200))
-
-        # Restore the original state of the screen
-		self.screen = original_screen.copy()
-
+		self.screen.blit(clock.display_timer(), (625,200))
+	
 		pygame.display.flip()
 
 	# main game loop
@@ -121,26 +108,11 @@ class Main():
 
 
 if __name__ == "__main__":
-    window_size = (602, 602)
-    screen_size = (window_size[0] + 150, window_size[-1])
-    tile_size = 30
-    screen = pygame.display.set_mode(screen_size)
-    pygame.display.set_caption("Maze")
+	window_size = (602, 602)
+	screen = (window_size[0] + 150, window_size[-1])
+	tile_size = 30
+	screen = pygame.display.set_mode(screen)
+	pygame.display.set_caption("Maze")
 
-    game = Main(screen)
-
-    rotation_angle = 0.0  # Initial rotation angle
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        # Rotate the maze by 0.5 degrees per frame
-        rotation_angle += 0.5
-
-        # Call the main method with the updated rotation angle
-        game.main(window_size, tile_size, rotation_angle)
-
-        pygame.display.flip()
+	game = Main(screen)
+	game.main(window_size, tile_size)

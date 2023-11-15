@@ -12,7 +12,11 @@ class Game:
 	# add goal point for player to reach
 	def add_goal_point(self, screen):
 		#adding gate for the goal point
+<<<<<<< Updated upstream
 		img_path = 'scaramushroom0.png'
+=======
+		img_path = '/Users/GAdmin.DESKTOP-HF79M0T/Desktop/BasicProjectRelay/Grp 1/scaramushroom0.png'
+>>>>>>> Stashed changes
 		img = pygame.image.load(img_path)
 		img = pygame.transform.scale(img, (self.tile, self.tile))
 		screen.blit(img, (self.goal_cell.x * self.tile, self.goal_cell.y * self.tile))
