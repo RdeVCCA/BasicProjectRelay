@@ -4,7 +4,7 @@
 # and then they solve some kind of puzzle
 
 import pygame
-from players import Player
+# from players import Player
 from obstacles import Obstacle
 from line import Line
 # Initialize Pygame
@@ -24,6 +24,38 @@ clock = pygame.time.Clock()
 run = True
 
 game = pygame.sprite.Group()
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self, no, start_x, start_y):
+        super().__init__()
+        self.image = pygame.image.load("player.png")
+        self.image = pygame.transform.scale(self.image, (int(self.image.get_width() * 0.1), int(self.image.get_height() * 0.1)))
+        
+        self.rect = self.image.get_rect()
+        self.speed = 10
+        self.playerNumber = no
+        self.x = start_x
+        self.y = start_y
+
+    def movement(self, keys):
+        if self.playerNumber == 1:  # WASD controls for player 1
+            if keys[pygame.K_w]:
+                self.y -= self.speed
+            if keys[pygame.K_s]:
+                self.y += self.speed
+            if keys[pygame.K_a]:
+                self.x -= self.speed
+            if keys[pygame.K_d]:
+                self.x += self.speed
+        elif self.playerNumber == 2:  # Arrow keys for player 2
+            if keys[pygame.K_UP]:
+                self.y -= self.speed
+            if keys[pygame.K_DOWN]:
+                self.y += self.speed
+            if keys[pygame.K_LEFT]:
+                self.x -= self.speed
+            if keys[pygame.K_RIGHT]:
+                self.x += self.speed
 
 player1 = Player(1, 0, 0)
 player2 = Player(2, 750, 0)
@@ -49,34 +81,61 @@ while run:
             run = False
 
     keys = pygame.key.get_pressed()
-    
-    player1.movement(keys)
-    player2.movement(keys)
 
-    player1_rect = pygame.Rect(player1_x, player1_y, player_size, player_size)
-    player2_rect = pygame.Rect(player2_x, player2_y, player_size, player_size)
+    # Initialize the next positions to the current positions
+    next_player1_x = player1.x
+    next_player1_y = player1.y
+    next_player2_x = player2.x
+    next_player2_y = player2.y
 
+    if player1.playerNumber == 1:  # WASD controls for player 1
+        if keys[pygame.K_w]:
+            next_player1_y -= player1.speed
+        if keys[pygame.K_s]:
+            next_player1_y += player1.speed
+        if keys[pygame.K_a]:
+            next_player1_x -= player1.speed
+        if keys[pygame.K_d]:
+            next_player1_x += player1.speed
+    if player2.playerNumber == 2:  # Arrow keys for player 2
+        if keys[pygame.K_UP]:
+            next_player2_y -= player2.speed
+        if keys[pygame.K_DOWN]:
+            next_player2_y += player2.speed
+        if keys[pygame.K_LEFT]:
+            next_player2_x -= player2.speed
+        if keys[pygame.K_RIGHT]:
+            next_player2_x += player2.speed
+
+    # Create Rect objects for the next position of the players
+    next_player1_rect = pygame.Rect(next_player1_x, next_player1_y, player_size, player_size)
+    next_player2_rect = pygame.Rect(next_player2_x, next_player2_y, player_size, player_size)
+
+    # Check for collision with the walls
+    player1_collision = False
+    player2_collision = False
     for wall in walls:
-        if player1_rect.colliderect(wall):
-            # Handle collision (you can adjust this part according to your game logic)
-            if keys[pygame.K_LEFT] and player1_x + player_speed > wall.right:
-                player1_x = wall.right
-            if keys[pygame.K_RIGHT] and player1_x < wall.left - player_size:
-                player1_x = wall.left - player_size
-            if keys[pygame.K_UP] and player1_y + player_speed > wall.bottom:
-                player1_y = wall.bottom
-            if keys[pygame.K_DOWN] and player1_y < wall.top - player_size:
-                player1_y = wall.top - player_size
-        if player2_rect.colliderect(wall):
-            # Handle collision (you can adjust this part according to your game logic)
-            if keys[pygame.K_LEFT] and player2_x + player_speed > wall.right:
-                player2_x = wall.right
-            if keys[pygame.K_RIGHT] and player2_x < wall.left - player_size:
-                player2_x = wall.left - player_size
-            if keys[pygame.K_UP] and player2_y + player_speed > wall.bottom:
-                player2_y = wall.bottom
-            if keys[pygame.K_DOWN] and player2_y < wall.top - player_size:
-                player2_y = wall.top - player_size
+        if next_player1_rect.colliderect(wall):
+            player1_collision = True
+        if next_player2_rect.colliderect(wall):
+            player2_collision = True
+
+    # If no collision would occur, move the player
+    if not player1_collision:
+        player1.x = next_player1_x
+        player1.y = next_player1_y
+    if not player2_collision:
+        player2.x = next_player2_x
+        player2.y = next_player2_y
+
+    player1.rect.x = player1.x
+    player1.rect.y = player1.y
+    player2.rect.x = player2.x
+    player2.rect.y = player2.y
+
+    # Check for collision between the players
+    if player1.rect.colliderect(player2.rect):
+        run = False
 
     # Clear the screen
     screen.fill(white)
@@ -86,7 +145,7 @@ while run:
     game.update()
 
     for wall in walls:
-        pygame.draw.rect(screen, white, wall)
+        pygame.draw.rect(screen, black, wall)
 
     # Update the display
     pygame.display.flip()
