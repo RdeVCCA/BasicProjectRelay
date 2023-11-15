@@ -20,17 +20,23 @@ black = (0, 0, 0)
 clock = pygame.time.Clock()
 run = True
 
+game = pygame.sprite.Group();
+
+# player = 
+
 while run:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            is_running = False
+        if event.type == pygame.QUIT:   
+            run = False
 
     # Game logic goes here
+
 
     # Clear the screen
     screen.fill(white)
 
     # Draw objects or perform additional rendering
+    game.draw(screen);
 
     # Update the display
     pygame.display.flip()
