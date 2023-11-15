@@ -8,9 +8,9 @@ screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption("SEA SHOOTER")
 
 assets = {
-    "player":[pygame.image.load("assets/submarine.png")],
+    "player":[pygame.image.load("assets/sprite_mermaid0.png")],
     "background":[pygame.image.load("assets/lava1.png"),pygame.image.load("assets/lava2.png"),pygame.image.load("assets/lava3.png"),pygame.image.load("assets/lava4.png")],
-    "asteriod":[pygame.image.load("assets/jellyfish.png"), pygame.image.load("assets/sprite_mermaid0.png")],
+    "asteriod":[pygame.image.load("assets/submarine.png"),
     "bullet":[pygame.image.load("assets/New Piskel (1).png")],
     "bgm":pygame.mixer.Sound("assets/bgm.mp3"),
     "pew":pygame.mixer.Sound("assets/pew.mp3")
