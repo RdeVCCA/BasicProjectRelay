@@ -320,7 +320,7 @@ while run:
                 if event.unicode == "a":
                     player.acc[0] -= acc
         if random.choice(range(100)) < 25:
-            generate_asteriod(player)
+            generate_asteriod()
 
         game.update()
         screen.fill((0,0,0))
