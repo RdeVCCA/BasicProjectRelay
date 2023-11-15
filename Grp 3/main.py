@@ -6,7 +6,9 @@ width = 600
 height = 600
 screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption("SEA SHOOTER")
+font = pygame.font.SysFont(None, 36)
 
+global score
 score = 0
 
 assets = {
@@ -149,7 +151,7 @@ class Asteriod(Object):
             if sprite.name == "bullet": #Kill both bulle and asteriod
                 self.kill()
                 sprite.kill()
-                score += 1
+                
                 break
             if sprite.name == "player":
                 alive  = False
@@ -253,6 +255,7 @@ while run:
             generate_bullet(player) 
             generate_bullet(player)
             generate_bullet(player)
+            score += 1
 
          
             frame_count = 0
@@ -296,6 +299,8 @@ while run:
         game.update()
         screen.fill((0,0,0))
         game.draw(screen)
+        score_text = font.render(f'Score: {score}', True, (255, 255, 255))  # White color
+        screen.blit(score_text, (10, 10))  # Draw the text at position (10, 10)
 
         clock.tick(FPS)
         pygame.display.flip()
@@ -303,6 +308,10 @@ while run:
     game = pygame.sprite.Group()
     game.add(Mouse())
     game.add(AgainButton((width/2-50,height/2-25)))
+    score = 0
+    
+    
+    
     again = False
     while again == False:
         for event in pygame.event.get():
