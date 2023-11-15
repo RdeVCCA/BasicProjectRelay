@@ -14,11 +14,11 @@ class Cell:
 		if self.walls['top']:
 			pygame.draw.line(sc, pygame.Color('darkgreen'), (x, y), (x + tile, y), self.thickness)
 		if self.walls['right']:
-			pygame.draw.line(sc, pygame.Color('red'), (x + tile, y), (x + tile, y + tile), self.thickness)
+			pygame.draw.line(sc, pygame.Color('darkgreen'), (x + tile, y), (x + tile, y + tile), self.thickness)
 		if self.walls['bottom']:
 			pygame.draw.line(sc, pygame.Color('darkgreen'), (x + tile, y + tile), (x , y + tile), self.thickness)
 		if self.walls['left']:
-			pygame.draw.line(sc, pygame.Color('red'), (x, y + tile), (x, y), self.thickness)
+			pygame.draw.line(sc, pygame.Color('darkgreen'), (x, y + tile), (x, y), self.thickness)
 
 	# checks if cell does exist and returns it if it does
 	def check_cell(self, x, y, cols, rows, grid_cells):
