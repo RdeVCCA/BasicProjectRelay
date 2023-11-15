@@ -54,3 +54,54 @@ while run:
 
 # Quit Pygame
 pygame.quit()
+=======
+# if you have time create some levels
+# please get a deeeck drawing to be connecting the 2 players
+
+import pygame
+from obstacles import Obstacle
+from players import Player
+from line import Line
+
+pygame.init()
+# Sprite groups
+all_sprites = pygame.sprite.Group()
+obstacles = pygame.sprite.Group()
+
+# put your assets 
+
+# Create player instances and add them to the sprite group
+player1 = Player(1, 100, 300)
+player2 = Player(2, 700, 300)
+all_sprites.add(player1, player2)
+
+# Create obstacles and add them to both all_sprites and obstacles groups
+obstacle1 = Obstacle(200, 200, 50, 50)
+obstacle2 = Obstacle(400, 300, 100, 50)
+all_sprites.add(obstacle1, obstacle2)
+obstacles.add(obstacle1, obstacle2)
+
+
+# Create the line connecting players
+connecting_line = Line(player1, player2)
+all_sprites.add(connecting_line)
+
+running = True
+
+# Main game loop
+while running:
+    # ... (event loop)
+
+    keys = pygame.key.get_pressed()
+    all_sprites.update(keys)
+
+    # Update the game display and fill the screen with a color
+    screen.fill((255, 255, 255))
+    
+    # Draw the line connecting the two players
+    pygame.draw.line(screen, (0, 0, 0), player1.rect.center, player2.rect.center, 5)
+
+    # Draw all sprites
+    all_sprites.draw(screen)
+
+    pygame.display.update()
