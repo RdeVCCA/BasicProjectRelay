@@ -3,6 +3,10 @@
 # the 2 players are joined together by a string or something
 # and then they solve some kind of puzzle
 
+# for the next group you can somehow connect the 2 players together
+# with a line or like a cord idk how u gonna do that 
+# then if you have time create some levels
+
 import pygame
 from obstacles import Obstacle
 from players import Player
