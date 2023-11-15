@@ -249,15 +249,11 @@ def get_sign(number):
 def generate_bullet(player_obj):
     location = [player_obj.pos[0] + player_obj.image.get_width()/4 ,player_obj.pos[1]]
     game.add(Bullet(location))
-    location = [random.choice(range(0,width-assets["asteriod"][0].get_width())),-1*assets["asteriod"][0].get_height()] 
-    game.add(Asteriod(img,location,False))
     
-def generate_asteriod(player_obj):
+def generate_asteriod():
     img = random.choice(assets["asteriod"])
     location = [random.choice(range(0,width-assets["asteriod"][0].get_width())),-1*assets["asteriod"][0].get_height()]
     game.add(Asteriod(img,location,False))
-    location = [player_obj.pos[0] + player_obj.image.get_width()/4 ,player_obj.pos[1]]
-    game.add(Bullet(location))
 
 pygame.mixer.Channel(0).play(assets["bgm"],1,fade_ms=500)
 
