@@ -14,12 +14,12 @@ global score
 score = 0
 
 assets = {
-    "player":[pygame.image.load("assets/sprite_mermaid0.png")],
-    "background":[pygame.image.load("assets/lava1.png"),pygame.image.load("assets/lava2.png"),pygame.image.load("assets/lava3.png"),pygame.image.load("assets/lava4.png")],
-    "asteriod":[pygame.image.load("assets/submarine.png")],
-    "bullet":[pygame.image.load("assets/New Piskel (1).png")],
-    "bgm":pygame.mixer.Sound("assets/music1.mp3"),
-    "pew":pygame.mixer.Sound("assets/fart.mp3")
+    "player":[pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/sprite_mermaid0.png")],
+    "background":[pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/lava1.png"),pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/lava2.png"),pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/lava3.png"),pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/lava4.png")],
+    "asteriod":[pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/submarine.png")],
+    "bullet":[pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/New Piskel (1).png")],
+    "bgm":pygame.mixer.Sound("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/music1.mp3"),
+    "pew":pygame.mixer.Sound("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/fart.mp3")
 }
 assets["bonus"] = [pygame.image.load("scaramushroom0.png")]
 cooldown = {"dash":0}
@@ -36,11 +36,11 @@ clock = pygame.time.Clock()
 run = True
 
 def choice():
-    r_num = random.random();
+    r_num = random.random()
     if r_num > 0.8:
-        return True;
+        return True
     else:
-        return False;
+        return False
 
 class Animation:
     def __init__(self,imgs,reverse,interval):
@@ -183,6 +183,12 @@ class Asteriod(Object): # create asteroids to shoot
                 break
             if sprite.name == "player":
                 alive  = False
+            if self.pos[0] > width:
+                self.kill()
+                break
+            if self.pos[1] > height:
+                self.kill()
+                break
 
 class Bullet(Object): # create bullets for the player
     def __init__(self,location):
@@ -306,9 +312,13 @@ while run:
             generate_bullet(player) 
             generate_bullet(player)
             generate_bullet(player)
+<<<<<<< Updated upstream
             score += 69
 
          
+=======
+            score += 1
+>>>>>>> Stashed changes
             frame_count = 0
         queue = pygame.event.get()
         if cooldown["dash"] > 0:
