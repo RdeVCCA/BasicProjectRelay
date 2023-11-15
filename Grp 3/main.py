@@ -14,13 +14,14 @@ global score
 score = 0
 
 assets = {
-    "player":[pygame.image.load("assets/sprite_mermaid0.png")],
-    "background":[pygame.image.load("assets/lava1.png"),pygame.image.load("assets/lava2.png"),pygame.image.load("assets/lava3.png"),pygame.image.load("assets/lava4.png")],
-    "asteriod":[pygame.image.load("assets/submarine.png")],
-    "bullet":[pygame.image.load("assets/New Piskel (1).png")],
-    "bgm":pygame.mixer.Sound("assets/music1.mp3"),
-    "pew":pygame.mixer.Sound("assets/fart.mp3")
+    "player":[pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/sprite_mermaid0.png")],
+    "background":[pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/lava1.png"),pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/lava2.png"),pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/lava3.png"),pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/lava4.png")],
+    "asteriod":[pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/submarine.png")],
+    "bullet":[pygame.image.load("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/New Piskel (1).png")],
+    "bgm":pygame.mixer.Sound("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/music1.mp3"),
+    "pew":pygame.mixer.Sound("/Users/daphnechia/Documents/GitHub/BasicProjectRelay/assets/fart.mp3")
 }
+assets["bonus"] = [pygame.image.load("scaramushroom0.png")]
 cooldown = {"dash":0}
 
 #Set an icon
@@ -35,11 +36,11 @@ clock = pygame.time.Clock()
 run = True
 
 def choice():
-    r_num = random.random();
+    r_num = random.random()
     if r_num > 0.8:
-        return True;
+        return True
     else:
-        return False;
+        return False
 
 class Animation:
     def __init__(self,imgs,reverse,interval):
@@ -121,6 +122,12 @@ class Player(Object):
             self.velocity[0] = 0
         else:
             self.pos[0] += self.velocity[0]
+        
+        for bonus in pygame.sprite.spritecollide(self, game, False):
+            if isinstance(bonus, Bonus):
+                global score
+                score += 420  # Increase score
+                bonus.kill()
             
         #Checking on y-axis
         collided_y = False
@@ -176,6 +183,12 @@ class Asteriod(Object): # create asteroids to shoot
                 break
             if sprite.name == "player":
                 alive  = False
+            if self.pos[0] > width:
+                self.kill()
+                break
+            if self.pos[1] > height:
+                self.kill()
+                break
 
 class Bullet(Object): # create bullets for the player
     def __init__(self,location):
@@ -258,6 +271,25 @@ def generate_asteriod():
 
 pygame.mixer.Channel(0).play(assets["bgm"],1,fade_ms=500)
 
+class Bonus(Object):  # Inherits from your existing Object class
+    def __init__(self, image, location):
+        super().__init__("bonus", [image], False, location, 60, True)
+        self.velocity = [0, 2]  # Fall down the screen
+
+    def update(self):
+        super().update()
+        self.pos[1] += self.velocity[1]
+        self.rect = pygame.Rect(self.pos[0], self.pos[1], self.image.get_width(), self.image.get_height())
+        # Remove the bonus if it goes off the screen
+        if self.pos[1] > height:
+            self.kill()
+
+def generate_bonus():
+    img = pygame.image.load("scaramushroom0.png")  # Load your bonus image
+    location = [random.randint(0, width - img.get_width()), 0]  # Spawn at random x and at the top of the screen
+    game.add(Bonus(img, location))
+
+
 
 
 while run:
@@ -280,13 +312,22 @@ while run:
             generate_bullet(player) 
             generate_bullet(player)
             generate_bullet(player)
-            score += 1
+<<<<<<< Updated upstream
+            score += 69
 
          
+=======
+            score += 1
+>>>>>>> Stashed changes
             frame_count = 0
         queue = pygame.event.get()
         if cooldown["dash"] > 0:
             cooldown["dash"] -= 1
+            
+        # Periodically generate bonuses
+        if random.randint(0, 100) < 5:  # 5% chance to spawn a bonus each frame
+            generate_bonus()
+        
         for event in queue:
             acc = 0.15
             if event.type == pygame.QUIT:

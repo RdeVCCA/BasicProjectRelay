@@ -7,7 +7,6 @@ class Maze:
 		self.rows = rows
 		self.thickness = 4
 		self.grid_cells = [Cell(col, row, self.thickness) for row in range(self.rows) for col in range(self.cols)]
-		self.angle = 0  # Initial angle
 
 	# carve grid cell walls
 	def remove_walls(self, current, next):
