@@ -16,6 +16,8 @@ pygame.init()
 all_sprites = pygame.sprite.Group()
 obstacles = pygame.sprite.Group()
 
+# put your assets 
+
 # Create player instances and add them to the sprite group
 player1 = Player(1, 100, 300)
 player2 = Player(2, 700, 300)
