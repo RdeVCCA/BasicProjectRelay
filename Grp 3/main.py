@@ -158,9 +158,9 @@ class Asteriod(Object): # create asteroids to shoot
         global alive
         super().update()
         if self.very_fast:
-            self.velocity[1] += 40;
+            self.velocity[1] += 20;
         elif self.very_slow:
-            self.velocity[1] -= 10;
+            self.velocity[1] -= 5;
         
         if self.move_left:
             self.velocity[0] += 10;
