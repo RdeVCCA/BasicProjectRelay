@@ -21,6 +21,7 @@ assets = {
     "bgm":pygame.mixer.Sound("assets/music1.mp3"),
     "pew":pygame.mixer.Sound("assets/fart.mp3")
 }
+assets["bonus"] = [pygame.image.load("scaramushroom0.png")]
 cooldown = {"dash":0}
 
 #Set an icon
@@ -121,6 +122,12 @@ class Player(Object):
             self.velocity[0] = 0
         else:
             self.pos[0] += self.velocity[0]
+        
+        for bonus in pygame.sprite.spritecollide(self, game, False):
+            if isinstance(bonus, Bonus):
+                global score
+                score += 420  # Increase score
+                bonus.kill()
             
         #Checking on y-axis
         collided_y = False
@@ -258,6 +265,25 @@ def generate_asteriod():
 
 pygame.mixer.Channel(0).play(assets["bgm"],1,fade_ms=500)
 
+class Bonus(Object):  # Inherits from your existing Object class
+    def __init__(self, image, location):
+        super().__init__("bonus", [image], False, location, 60, True)
+        self.velocity = [0, 2]  # Fall down the screen
+
+    def update(self):
+        super().update()
+        self.pos[1] += self.velocity[1]
+        self.rect = pygame.Rect(self.pos[0], self.pos[1], self.image.get_width(), self.image.get_height())
+        # Remove the bonus if it goes off the screen
+        if self.pos[1] > height:
+            self.kill()
+
+def generate_bonus():
+    img = pygame.image.load("scaramushroom0.png")  # Load your bonus image
+    location = [random.randint(0, width - img.get_width()), 0]  # Spawn at random x and at the top of the screen
+    game.add(Bonus(img, location))
+
+
 
 
 while run:
@@ -280,13 +306,18 @@ while run:
             generate_bullet(player) 
             generate_bullet(player)
             generate_bullet(player)
-            score += 1
+            score += 69
 
          
             frame_count = 0
         queue = pygame.event.get()
         if cooldown["dash"] > 0:
             cooldown["dash"] -= 1
+            
+        # Periodically generate bonuses
+        if random.randint(0, 100) < 5:  # 5% chance to spawn a bonus each frame
+            generate_bonus()
+        
         for event in queue:
             acc = 0.15
             if event.type == pygame.QUIT:
