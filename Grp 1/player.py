@@ -6,7 +6,7 @@ class Player:
 		self.y = int(y)
 		self.player_size = 10
 		self.rect = pygame.Rect(self.x, self.y, self.player_size, self.player_size)
-		self.color = (250, 120, 60)
+		self.image = pygame.image.load("/assets/kju img.png")
 		self.velX = 0
 		self.velY = 0
 		self.left_pressed = False
