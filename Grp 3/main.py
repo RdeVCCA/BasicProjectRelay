@@ -7,6 +7,8 @@ height = 600
 screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption("SEA SHOOTER")
 
+score = 0
+
 assets = {
     "player":[pygame.image.load("assets/sprite_mermaid0.png")],
     "background":[pygame.image.load("assets/lava1.png"),pygame.image.load("assets/lava2.png"),pygame.image.load("assets/lava3.png"),pygame.image.load("assets/lava4.png")],
@@ -147,6 +149,7 @@ class Asteriod(Object):
             if sprite.name == "bullet": #Kill both bulle and asteriod
                 self.kill()
                 sprite.kill()
+                score += 1
                 break
             if sprite.name == "player":
                 alive  = False
@@ -226,6 +229,9 @@ def generate_asteriod():
     game.add(Asteriod(img,location,False))
 
 pygame.mixer.Channel(0).play(assets["bgm"],1,fade_ms=500)
+
+
+
 while run:
 
 
