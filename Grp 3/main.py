@@ -1,19 +1,25 @@
+# Intialize
 import pygame
 import random
 pygame.init()
+
 #Settings
 width = 600
 height = 600
 screen = pygame.display.set_mode((width,height))
 pygame.display.set_caption("SEA SHOOTER")
+font = pygame.font.SysFont(None, 36)
+
+global score
+score = 0
 
 assets = {
     "player":[pygame.image.load("assets/sprite_mermaid0.png")],
     "background":[pygame.image.load("assets/lava1.png"),pygame.image.load("assets/lava2.png"),pygame.image.load("assets/lava3.png"),pygame.image.load("assets/lava4.png")],
-    "asteriod":[pygame.image.load("assets/submarine.png"),
+    "asteriod":[pygame.image.load("assets/submarine.png")],
     "bullet":[pygame.image.load("assets/New Piskel (1).png")],
-    "bgm":pygame.mixer.Sound("assets/bgm.mp3"),
-    "pew":pygame.mixer.Sound("assets/pew.mp3")
+    "bgm":pygame.mixer.Sound("assets/music1.mp3"),
+    "pew":pygame.mixer.Sound("assets/fart.mp3")
 }
 cooldown = {"dash":0}
 
@@ -27,6 +33,13 @@ shoot_delay = 30
 FPS = 60 #This is just a variable which we will call later with clock
 clock = pygame.time.Clock()
 run = True
+
+def choice():
+    r_num = random.random();
+    if r_num > 0.8:
+        return True;
+    else:
+        return False;
 
 class Animation:
     def __init__(self,imgs,reverse,interval):
@@ -88,15 +101,15 @@ class Player(Object):
             self.velocity[1] = -self.max
         #Add resistance
         if self.velocity[0] > 0:
-            self.velocity[0] -= 0.05
+            self.velocity[0] -= 0.1
         if self.velocity[1] > 0:
-            self.velocity[1] -= 0.05
+            self.velocity[1] -= 0.1
         if self.velocity[0] < 0:
-            self.velocity[0] += 0.05
+            self.velocity[0] += 0.1
         if self.velocity[1] < 0:
-            self.velocity[1] += 0.05
+            self.velocity[1] += 0.1
             
-        #Change position
+        #Change position: x-axis and y-axis
         #Checking on x-axis
         collided_x = False
         self.rect = pygame.Rect(self.pos[0]+self.velocity[0],self.pos[1],self.image.get_width(),self.image.get_height()) #A forecast
@@ -108,6 +121,7 @@ class Player(Object):
             self.velocity[0] = 0
         else:
             self.pos[0] += self.velocity[0]
+            
         #Checking on y-axis
         collided_y = False
         self.rect = pygame.Rect(self.pos[0],self.pos[1]+self.velocity[1],self.image.get_width(),self.image.get_height()) #A forecast
@@ -119,6 +133,7 @@ class Player(Object):
             self.velocity[1] = 0
         else:
             self.pos[1] += self.velocity[1]
+            
         #Update the rect based on the checked value of pos
         self.rect = self.rect = pygame.Rect(self.pos[0],self.pos[1],self.image.get_width(),self.image.get_height())
         #Limit the player in the screen
@@ -131,14 +146,25 @@ class Player(Object):
         if self.pos[1]  < 0:
             self.pos[1] = 0
 
-class Asteriod(Object):
+class Asteriod(Object): # create asteroids to shoot
     def __init__(self,image,location,rigid):
         super().__init__("asteroid",[image],False,location,60,True)
         self.rigid = rigid
         self.velocity = [0,2]
+        self.very_fast = choice();
+        self.very_slow = choice();
+        self.move_left = choice();
     def update(self):
         global alive
         super().update()
+        if self.very_fast:
+            self.velocity[1] += 40;
+        elif self.very_slow:
+            self.velocity[1] -= 10;
+        
+        if self.move_left:
+            self.velocity[0] += 10;
+
         self.pos[0] += self.velocity[0]
         self.pos[1] += self.velocity[1]
         self.rect = pygame.Rect(self.pos[0],self.pos[1],self.image.get_width(),self.image.get_height())
@@ -147,20 +173,21 @@ class Asteriod(Object):
             if sprite.name == "bullet": #Kill both bulle and asteriod
                 self.kill()
                 sprite.kill()
+                
                 break
             if sprite.name == "player":
                 alive  = False
 
-class Bullet(Object):
+class Bullet(Object): # create bullets for the player
     def __init__(self,location):
         surface = pygame.Surface((2,12))  #Create a surface, which is basically a image filled with solid color
         surface.fill((255, 0, 220)) #Fill the surface with a color
         super().__init__("bullet",assets["bullet"],False,location,60,True) 
-        self.velocity = [0,-5] #Travel upwards
+        self.velocity = [0,-8] #Travel upwards
         if self.velocity[1] < 0:
             self.velocity[1] -= 0.05
             
-    def update(self):
+    def update(self): 
         super().update()
         self.pos[0] += self.velocity[0]
         self.pos[1] += self.velocity[1]
@@ -203,6 +230,7 @@ class Button(Object):
             for sprite in pygame.sprite.spritecollide(self,game,False):
                 if sprite.name == "mouse":
                     self.clicked()
+                    
 class AgainButton(Button):
     def __init__(self,location):
         super().__init__(location,"Play Again")
@@ -217,15 +245,20 @@ def get_sign(number):
         return -1
     else:
         return 0
+        
 def generate_bullet(player_obj):
     location = [player_obj.pos[0] + player_obj.image.get_width()/4 ,player_obj.pos[1]]
     game.add(Bullet(location))
+    
 def generate_asteriod():
     img = random.choice(assets["asteriod"])
     location = [random.choice(range(0,width-assets["asteriod"][0].get_width())),-1*assets["asteriod"][0].get_height()]
     game.add(Asteriod(img,location,False))
 
 pygame.mixer.Channel(0).play(assets["bgm"],1,fade_ms=500)
+
+
+
 while run:
 
 
@@ -245,6 +278,10 @@ while run:
         if frame_count > shoot_delay:
             pygame.mixer.Channel(1).play(assets["pew"]) 
             generate_bullet(player) 
+            generate_bullet(player)
+            generate_bullet(player)
+            score += 1
+
          
             frame_count = 0
         queue = pygame.event.get()
@@ -281,12 +318,14 @@ while run:
                     player.acc[1] -= acc
                 if event.unicode == "a":
                     player.acc[0] -= acc
-        if random.choice(range(100)) < 5:
+        if random.choice(range(100)) < 25:
             generate_asteriod()
 
         game.update()
         screen.fill((0,0,0))
         game.draw(screen)
+        score_text = font.render(f'Score: {score}', True, (255, 255, 255))  # White color
+        screen.blit(score_text, (10, 10))  # Draw the text at position (10, 10)
 
         clock.tick(FPS)
         pygame.display.flip()
@@ -294,6 +333,10 @@ while run:
     game = pygame.sprite.Group()
     game.add(Mouse())
     game.add(AgainButton((width/2-50,height/2-25)))
+    score = 0
+    
+    
+    
     again = False
     while again == False:
         for event in pygame.event.get():

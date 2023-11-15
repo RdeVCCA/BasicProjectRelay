@@ -1,6 +1,6 @@
 import pygame
 
-class Line(pygame.sprite.Sprite):
+class Line(pygame.sprite.Sprite): # line connecting the players
     def __init__(self, start_sprite, end_sprite, width=5, color=(0, 0, 0)):
         super().__init__()
         self.start_sprite = start_sprite
