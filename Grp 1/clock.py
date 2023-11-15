@@ -18,7 +18,6 @@ class Clock:
 		if self.start_time is not None:
 			self.elapsed_time = time.time() - self.start_time
 
-
 	# Display the timer
 	def display_timer(self):
 		secs = int(self.elapsed_time % 60)
