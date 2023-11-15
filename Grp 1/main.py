@@ -76,13 +76,13 @@ class Main():
 		game = Game(maze.grid_cells[-1], tile)
 		player = Player(tile // 3, tile // 3)
 		clock = Clock()
-
+		music()
 		
 
 		maze.generate_maze()
 		clock.start_timer()
 		while self.running:
-			music();
+			
 			self.screen.fill("gray")
 			self.screen.fill( pygame.Color("darkslategray"), (603, 0, 752, 752))
 			
