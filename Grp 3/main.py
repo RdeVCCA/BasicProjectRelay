@@ -246,6 +246,7 @@ while run:
             pygame.mixer.Channel(1).play(assets["pew"]) 
             generate_bullet(player) 
             generate_bullet(player)
+            generate_bullet(player)
 
          
             frame_count = 0
