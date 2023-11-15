@@ -3,7 +3,7 @@
 # the 2 players are joined together by a string or something
 # and then they solve some kind of puzzle
 import pygame
-from Player import Player
+from players import Player
 
 # Initialize Pygame
 pygame.init()
@@ -23,7 +23,11 @@ run = True
 
 game = pygame.sprite.Group();
 
-player = Player()
+player1 = Player(1, 0, 0);
+player2 = Player(2, 600, 0);
+
+game.add(player1);
+game.add(player2)
 
 while run:
     for event in pygame.event.get():
