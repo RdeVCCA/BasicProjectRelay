@@ -28,6 +28,13 @@ FPS = 60 #This is just a variable which we will call later with clock
 clock = pygame.time.Clock()
 run = True
 
+def choice():
+    r_num = random.random();
+    if r_num > 0.8:
+        return True;
+    else:
+        return False;
+
 class Animation:
     def __init__(self,imgs,reverse,interval):
         self.index = 0
@@ -136,9 +143,20 @@ class Asteriod(Object):
         super().__init__("asteroid",[image],False,location,60,True)
         self.rigid = rigid
         self.velocity = [0,2]
+        self.very_fast = choice();
+        self.very_slow = choice();
+        self.move_left = choice();
     def update(self):
         global alive
         super().update()
+        if self.very_fast:
+            self.velocity[1] += 40;
+        elif self.very_slow:
+            self.velocity[1] -= 10;
+        
+        if self.move_left:
+            self.velocity[0] += 10;
+
         self.pos[0] += self.velocity[0]
         self.pos[1] += self.velocity[1]
         self.rect = pygame.Rect(self.pos[0],self.pos[1],self.image.get_width(),self.image.get_height())
