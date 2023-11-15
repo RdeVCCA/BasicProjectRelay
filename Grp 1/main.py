@@ -122,7 +122,7 @@ class Main():
 	
 			
 			player_pos = (player.x,player.y)  # Replace with actual player position
-			self.create_lighting_effect(self.screen, player_pos, 100)
+			self.create_lighting_effect(self.screen, player_pos, 50)
 			self._draw(maze, tile, player, game, clock)
 			
 			self.FPS.tick(60)
