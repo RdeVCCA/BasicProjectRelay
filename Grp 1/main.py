@@ -50,10 +50,11 @@ class Main():
 		self.screen.blit(clock.display_timer(), (625,200))
 	
 		pygame.display.flip()
-  
-  def create_lighting_effect(screen, player_pos, radius):
-        # Create a surface that covers the entire screen with black color
-		mask = pygame.Surface((screen.get_width(), screen.get_height()))
+
+	def create_lighting_effect(self,screen, player_pos, radius):
+	
+		# Create a surface that covers the entire screen with black color
+		mask = pygame.Surface((self.screen.get_width(), self.screen.get_height()))
 		mask.fill((0, 0, 0))
 
 		# Set the blend mode to remove the circle area
@@ -73,12 +74,14 @@ class Main():
 		player = Player(tile // 3, tile // 3)
 		clock = Clock()
 
+		
+
 		maze.generate_maze()
 		clock.start_timer()
 		while self.running:
 			self.screen.fill("gray")
 			self.screen.fill( pygame.Color("darkslategray"), (603, 0, 752, 752))
-
+			
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					pygame.quit()
@@ -116,12 +119,14 @@ class Main():
 				player.right_pressed = False
 				player.up_pressed = False
 				player.down_pressed = False
-    
-			player_pos = (400, 300)  # Replace with actual player position
-    		create_lighting_effect(screen, player_pos, 100)
-
+	
+			
+			player_pos = (player.x,player.y)  # Replace with actual player position
+			self.create_lighting_effect(self.screen, player_pos, 100)
 			self._draw(maze, tile, player, game, clock)
+			
 			self.FPS.tick(60)
+			
 
 
 if __name__ == "__main__":
