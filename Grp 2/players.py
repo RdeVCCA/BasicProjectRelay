@@ -2,25 +2,13 @@ import pygame
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, no, start_x, start_y):
-        super().__init__();
+        super().__init__()
         self.speed = 10
-        self.width = 50;
-        self.height = 50;
         self.playerNumber = no
         self.x = start_x
         self.y = start_y
-        self.image = pygame.Surface((self.width, self.height));
-        self.rect = self.image.get_rect();
-        self.rect.x = self.x;
-        self.rect.y = self.y;
-        if no ==1:
-            self.image.fill('red')
-        else:
-            self.image.fill('blue')
 
     def movement(self, keys):
-        self.rect.x = self.x;
-        self.rect.y = self.y;
         if self.playerNumber == 1:  # WASD controls for player 1
             if keys[pygame.K_w]:
                 self.y -= self.speed
