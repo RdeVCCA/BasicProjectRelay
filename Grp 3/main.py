@@ -126,7 +126,7 @@ class Player(Object):
         for bonus in pygame.sprite.spritecollide(self, game, False):
             if isinstance(bonus, Bonus):
                 global score
-                score += 10  # Increase score
+                score += 420  # Increase score
                 bonus.kill()
             
         #Checking on y-axis
