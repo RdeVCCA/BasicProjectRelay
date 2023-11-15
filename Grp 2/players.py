@@ -1,7 +1,8 @@
 import pygame
 
-class Player:
+class Player(pygame.sprite.Sprite):
     def __init__(self, no, start_x, start_y):
+        super().__init__()
         self.speed = 10
         self.playerNumber = no
         self.x = start_x

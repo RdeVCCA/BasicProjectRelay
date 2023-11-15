@@ -11,7 +11,7 @@ from obstacles import Obstacle
 from players import Player
 from line import Line
 
-
+pygame.init()
 # Sprite groups
 all_sprites = pygame.sprite.Group()
 obstacles = pygame.sprite.Group()
@@ -31,6 +31,8 @@ obstacles.add(obstacle1, obstacle2)
 # Create the line connecting players
 connecting_line = Line(player1, player2)
 all_sprites.add(connecting_line)
+
+running = True
 
 # Main game loop
 while running:

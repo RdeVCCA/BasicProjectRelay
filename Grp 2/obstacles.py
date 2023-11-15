@@ -1,7 +1,8 @@
 import pygame
 
-class Obstacle:
+class Obstacle(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height, color=(255, 0, 0)):
+        super().__init__()
         self.x = x
         self.y = y
         self.width = width
