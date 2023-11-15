@@ -10,6 +10,7 @@
 import pygame
 from obstacles import Obstacle
 from players import Player
+from line import Line
 
 
 # Sprite groups
@@ -27,6 +28,11 @@ obstacle2 = Obstacle(400, 300, 100, 50)
 all_sprites.add(obstacle1, obstacle2)
 obstacles.add(obstacle1, obstacle2)
 
+
+# Create the line connecting players
+connecting_line = Line(player1, player2)
+all_sprites.add(connecting_line)
+
 # Main game loop
 while running:
     # ... (event loop)
@@ -36,6 +42,9 @@ while running:
 
     # Update the game display and fill the screen with a color
     screen.fill((255, 255, 255))
+    
+    # Draw the line connecting the two players
+    pygame.draw.line(screen, (0, 0, 0), player1.rect.center, player2.rect.center, 5)
 
     # Draw all sprites
     all_sprites.draw(screen)
